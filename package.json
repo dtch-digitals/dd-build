@@ -16,16 +16,18 @@
     "url": "https://github.com/dtch-digitals/dd-build/issues"
   },
   "homepage": "https://github.com/dtch-digitals/dd-build#readme",
-  "devDependencies": {
-    "@types/browser-sync": "^2.29.0",
-    "@types/lodash.debounce": "^4.0.9",
-    "@types/node": "^22.13.0",
-    "@types/uglify-js": "^3.17.5",
+  "dependencies": {
     "browser-sync": "^3.0.3",
     "chokidar": "^4.0.3",
     "concat": "^1.0.3",
     "lodash.debounce": "^4.0.8",
     "sass": "^1.83.4",
     "uglify-js": "^3.19.3"
+  },
+  "devDependencies": {
+    "@types/browser-sync": "^2.29.0",
+    "@types/lodash.debounce": "^4.0.9",
+    "@types/node": "^22.13.0",
+    "@types/uglify-js": "^3.17.5"
   }
 }
