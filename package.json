@@ -1,0 +1,28 @@
+{
+  "name": "dd-build",
+  "version": "1.0.0",
+  "description": "Dtch. Digitals static build system",
+  "main": "index.js",
+  "bin": {
+    "ddb": "index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dtch-digitals/dd-build.git"
+  },
+  "author": "Wibo Kuipers",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/dtch-digitals/dd-build/issues"
+  },
+  "homepage": "https://github.com/dtch-digitals/dd-build#readme",
+  "dependencies": {
+    "@types/node": "^22.13.0",
+    "concat": "^1.0.3",
+    "sass": "^1.83.4",
+    "uglify-js": "^3.19.3"
+  },
+  "devDependencies": {
+    "@types/uglify-js": "^3.17.5"
+  }
+}
