@@ -1,11 +1,15 @@
 import sass from "sass";
 import fs from "fs";
 import path from "path";
+import debounce from "lodash.debounce";
+import chokidar from "chokidar";
+
+const cwd = process.cwd();
+const sassDir = path.join(cwd, "_src/sass");
 
 // Function to build and minify SASS
 export function buildSass() {
 
-	const cwd = process.cwd();
 	const outputDir = path.join(cwd, "assets/dist");
 	const outputFile = path.join(outputDir, "dd_style.css");
 	const outputMapFile = path.join(outputDir, "dd_style.css.map");
@@ -16,7 +20,7 @@ export function buildSass() {
 	}
 
 	try {
-		const sassResult = sass.compile(path.join(cwd, "_src/sass/style.scss"), {
+		const sassResult = sass.compile(path.join(sassDir, "style.scss"), {
 			style: "compressed",
 			sourceMap: true,
 			loadPaths: [path.join(cwd, "_src/sass")],
@@ -34,4 +38,21 @@ export function buildSass() {
 	} catch (error) {
 		console.error("Error during SASS compilation/minification:", error);
 	}
+}
+
+export function watchSass() {
+
+	const buildSassDebounced = debounce(buildSass, 300);
+
+	const watcher = chokidar.watch(sassDir, {
+		ignored: path.join(cwd, "assets/**"),
+		persistent: true,
+	});
+
+	watcher
+		.on("add", buildSassDebounced)
+		.on("change", buildSassDebounced)
+		.on("unlink", buildSassDebounced);
+
+	console.log("Watching for SCSS changes...");
 }

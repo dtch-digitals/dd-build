@@ -2,11 +2,15 @@ import concat from "concat";
 import uglifyJS from "uglify-js";
 import fs from "fs";
 import path from "path";
+import chokidar from "chokidar";
+import { findJSFiles } from "./utils";
+import debounce from "lodash.debounce";
+
+const cwd = process.cwd();
+const jsDir = path.join(cwd, "_src/js");
 
 export function buildJS() {
 
-	const cwd = process.cwd();
-	const jsDir = path.join(cwd, "_src/js");
 	const outputDir = path.join(cwd, "assets/dist"); // Updated output directory
 	const outputFile = path.join(outputDir, "main.js"); // Updated output file path
 	const outputMapFile = path.join(outputDir, "main.js.map"); // Updated source map file path
@@ -44,20 +48,21 @@ export function buildJS() {
 	});
 }
 
-// Function to recursively find all .js files
-function findJSFiles(dir: string, fileList: Array<string> = []) {
-	const files = fs.readdirSync(dir);
 
-	files.forEach(file => {
-		const filePath = path.join(dir, file);
-		const fileStat = fs.statSync(filePath);
 
-		if (fileStat.isDirectory()) {
-			findJSFiles(filePath, fileList); // Recurse into subdirectories
-		} else if (filePath.endsWith(".js")) {
-			fileList.push(filePath);
-		}
+export function watchJS() {
+
+	const buildJSDebounced = debounce(buildJS, 300);
+
+	const watcher = chokidar.watch(jsDir, {
+		ignored: path.join(cwd, 'assets/**'),
+		persistent: true,
 	});
 
-	return fileList;
+	watcher
+		.on('add', buildJSDebounced)
+		.on('change', buildJSDebounced)
+		.on('unlink', buildJSDebounced);
+
+	console.log('Watching JS files for changes...');
 }
