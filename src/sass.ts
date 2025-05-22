@@ -51,7 +51,7 @@ export function buildSass() {
 export function watchSass() {
     const buildSassDebounced = debounce(buildSass, 300);
 
-    const watcher = chokidar.watch(sassDir, {
+    const watcher = chokidar.watch([sassDir, path.join(cwd, "package.json")], {
         ignored: path.join(cwd, "assets/**"),
         persistent: true,
     });

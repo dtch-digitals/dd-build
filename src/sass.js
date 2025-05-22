@@ -48,7 +48,7 @@ function buildSass() {
 }
 function watchSass() {
     const buildSassDebounced = (0, lodash_debounce_1.default)(buildSass, 300);
-    const watcher = chokidar_1.default.watch(sassDir, {
+    const watcher = chokidar_1.default.watch([sassDir, path_1.default.join(cwd, "package.json")], {
         ignored: path_1.default.join(cwd, "assets/**"),
         persistent: true,
     });
