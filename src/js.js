@@ -3,8 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.buildJS = buildJS;
-exports.watchJS = watchJS;
+exports.watchJS = exports.buildJS = void 0;
 const concat_1 = __importDefault(require("concat"));
 const uglify_js_1 = __importDefault(require("uglify-js"));
 const fs_1 = __importDefault(require("fs"));
@@ -44,6 +43,7 @@ function buildJS() {
         console.error("Error during JS concatenation/minification:", error);
     });
 }
+exports.buildJS = buildJS;
 function watchJS() {
     const buildJSDebounced = (0, lodash_debounce_1.default)(buildJS, 300);
     const watcher = chokidar_1.default.watch(jsDir, {
@@ -56,3 +56,4 @@ function watchJS() {
         .on('unlink', buildJSDebounced);
     console.log('Watching JS files for changes...');
 }
+exports.watchJS = watchJS;

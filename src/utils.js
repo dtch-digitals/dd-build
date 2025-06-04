@@ -3,10 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findJSFiles = findJSFiles;
-exports.getOption = getOption;
-exports.moveFile = moveFile;
-exports.removeFile = removeFile;
+exports.removeFile = exports.moveFile = exports.getOption = exports.findJSFiles = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 // Function to recursively find all .js files
@@ -24,6 +21,7 @@ function findJSFiles(dir, fileList = []) {
     });
     return fileList;
 }
+exports.findJSFiles = findJSFiles;
 // Read options from package.json
 function getOption(option) {
     const packageJsonPath = path_1.default.join(process.cwd(), "package.json");
@@ -41,6 +39,7 @@ function getOption(option) {
         console.error("Could not locate package.json in the current working directory.");
     }
 }
+exports.getOption = getOption;
 /**
  * Synchronously moves a file from a source path to a destination path.
  * This function will create the destination directory if it does not exist.
@@ -71,6 +70,7 @@ function moveFile(sourcePath, destinationPath) {
         throw new Error(`Failed to move file from "${sourcePath}" to "${destinationPath}": ${error.message}`);
     }
 }
+exports.moveFile = moveFile;
 /**
  * Synchronously removes a file if it exists.
  * Does not throw an error if the file does not exist.
@@ -99,3 +99,4 @@ function removeFile(filePath) {
         return false;
     }
 }
+exports.removeFile = removeFile;
