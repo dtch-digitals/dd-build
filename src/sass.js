@@ -19,8 +19,8 @@ function buildSass() {
     const outputMapFile = path_1.default.join(outputDir, "dd_style.css.map");
     // Add breakpoints to setup file
     generateBreakpointMixins();
-    // moveFile(path.join(sassDir, "setup.scss"), path.join(sassDir, ".setup.scss.bu"));
-    // moveFile(path.join(sassDir, ".setup.scss"), path.join(sassDir, "setup.scss"));
+    (0, utils_1.moveFile)(path_1.default.join(sassDir, "setup.scss"), path_1.default.join(sassDir, ".setup.scss.bu"));
+    (0, utils_1.moveFile)(path_1.default.join(sassDir, ".setup.scss"), path_1.default.join(sassDir, "setup.scss"));
     // If dist dir does not exits, create it
     if (!fs_1.default.existsSync(outputDir)) {
         fs_1.default.mkdirSync(outputDir, { recursive: true });
@@ -42,8 +42,8 @@ function buildSass() {
         console.error("Error during SASS compilation/minification:", error);
     }
     // Move the original options file back
-    // removeFile(path.join(sassDir, "setup.scss"));
-    // moveFile(path.join(sassDir, ".setup.scss.bu"), path.join(sassDir, "setup.scss"));
+    (0, utils_1.removeFile)(path_1.default.join(sassDir, "setup.scss"));
+    (0, utils_1.moveFile)(path_1.default.join(sassDir, ".setup.scss.bu"), path_1.default.join(sassDir, "setup.scss"));
 }
 exports.buildSass = buildSass;
 function watchSass() {
@@ -57,9 +57,8 @@ function watchSass() {
 }
 exports.watchSass = watchSass;
 function generateBreakpointMixins() {
-    // const originalMixinPath = path.join(sassDir, "setup.scss");
-    // const hiddenMixinPath = path.join(sassDir, `.setup.scss`);
-    const hiddenMixinPath = path_1.default.join(sassDir, `mixins.scss`);
+    const originalMixinPath = path_1.default.join(sassDir, "setup.scss");
+    const hiddenMixinPath = path_1.default.join(sassDir, `.setup.scss`);
     const breakpoints = (0, utils_1.getOption)("breakpoints");
     let newSassMixinsString = "";
     for (const prop in breakpoints) {
@@ -78,13 +77,13 @@ function generateBreakpointMixins() {
         }
     }
     try {
-        // let existingContent = "";
-        // if (fs.existsSync(originalMixinPath)) {
-        // 	existingContent = fs.readFileSync(originalMixinPath, "utf8");
-        // }
-        // const finalContent = existingContent + "\n" + newSassMixinsString;
+        let existingContent = "";
+        if (fs_1.default.existsSync(originalMixinPath)) {
+            existingContent = fs_1.default.readFileSync(originalMixinPath, "utf8");
+        }
+        const finalContent = existingContent + "\n" + newSassMixinsString;
         // const finalContent = newSassMixinsString + "\n" + existingContent;
-        fs_1.default.writeFileSync(hiddenMixinPath, newSassMixinsString, "utf8");
+        fs_1.default.writeFileSync(hiddenMixinPath, finalContent, "utf8");
         // fs.writeFileSync(hiddenMixinPath, finalContent, "utf8");
         console.log(`Successfully prepended mixins to SASS setup`);
     }
