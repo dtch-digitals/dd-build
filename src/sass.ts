@@ -16,8 +16,8 @@ export function buildSass() {
 
 	// Add breakpoints to setup file
 	generateBreakpointMixins();
-	// moveFile(path.join(sassDir, "setup.scss"), path.join(sassDir, ".setup.scss.bu"));
-	// moveFile(path.join(sassDir, ".setup.scss"), path.join(sassDir, "setup.scss"));
+	moveFile(path.join(sassDir, "setup.scss"), path.join(sassDir, ".setup.scss.bu"));
+	moveFile(path.join(sassDir, ".setup.scss"), path.join(sassDir, "setup.scss"));
 
 	// If dist dir does not exits, create it
 	if (!fs.existsSync(outputDir)) {
@@ -44,8 +44,8 @@ export function buildSass() {
 	}
 
 	// Move the original options file back
-	// removeFile(path.join(sassDir, "setup.scss"));
-	// moveFile(path.join(sassDir, ".setup.scss.bu"), path.join(sassDir, "setup.scss"));
+	removeFile(path.join(sassDir, "setup.scss"));
+	moveFile(path.join(sassDir, ".setup.scss.bu"), path.join(sassDir, "setup.scss"));
 }
 
 export function watchSass() {
@@ -62,9 +62,8 @@ export function watchSass() {
 }
 
 function generateBreakpointMixins() {
-	// const originalMixinPath = path.join(sassDir, "setup.scss");
-	// const hiddenMixinPath = path.join(sassDir, `.setup.scss`);
-	const hiddenMixinPath = path.join(sassDir, `mixins.scss`);
+	const originalMixinPath = path.join(sassDir, "setup.scss");
+	const hiddenMixinPath = path.join(sassDir, `.setup.scss`);
 
 	const breakpoints = getOption("breakpoints");
 	let newSassMixinsString = "";
@@ -87,14 +86,14 @@ function generateBreakpointMixins() {
 	}
 
 	try {
-		// let existingContent = "";
-		// if (fs.existsSync(originalMixinPath)) {
-		// 	existingContent = fs.readFileSync(originalMixinPath, "utf8");
-		// }
+		let existingContent = "";
+		if (fs.existsSync(originalMixinPath)) {
+			existingContent = fs.readFileSync(originalMixinPath, "utf8");
+		}
 
-		// const finalContent = existingContent + "\n" + newSassMixinsString;
+		const finalContent = existingContent + "\n" + newSassMixinsString;
 		// const finalContent = newSassMixinsString + "\n" + existingContent;
-		fs.writeFileSync(hiddenMixinPath, newSassMixinsString, "utf8");
+		fs.writeFileSync(hiddenMixinPath, finalContent, "utf8");
 		// fs.writeFileSync(hiddenMixinPath, finalContent, "utf8");
 
 		console.log(`Successfully prepended mixins to SASS setup`);
