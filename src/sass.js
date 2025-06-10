@@ -3,7 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.watchSass = exports.buildSass = void 0;
+exports.buildSass = buildSass;
+exports.watchSass = watchSass;
 const sass_1 = __importDefault(require("sass"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
@@ -45,7 +46,6 @@ function buildSass() {
     (0, utils_1.removeFile)(path_1.default.join(sassDir, "setup.scss"));
     (0, utils_1.moveFile)(path_1.default.join(sassDir, ".setup.scss.bu"), path_1.default.join(sassDir, "setup.scss"));
 }
-exports.buildSass = buildSass;
 function watchSass() {
     const buildSassDebounced = (0, lodash_debounce_1.default)(buildSass, 300);
     const watcher = chokidar_1.default.watch([sassDir, path_1.default.join(cwd, "package.json")], {
@@ -55,7 +55,6 @@ function watchSass() {
     watcher.on("add", buildSassDebounced).on("change", buildSassDebounced).on("unlink", buildSassDebounced);
     console.log("Watching for SCSS changes...");
 }
-exports.watchSass = watchSass;
 function generateBreakpointMixins() {
     const originalMixinPath = path_1.default.join(sassDir, "setup.scss");
     const hiddenMixinPath = path_1.default.join(sassDir, `.setup.scss`);
